@@ -1,8 +1,8 @@
-# <img src="https://cdn.dofusretro.fr/img/map.png" height="20"> Map Renderer for Dofus Retro 
+# <img src="https://cdn.dofusretro.fr/img/map.png" height="20"> Map Renderer for Dofus Touch 
 
 ## About
 
-Generate Dofus Retro maps as PNG, from [API.DofusRetro.fr](https://api.dofusretro.fr) datas
+Generate Dofus Retro maps as PNG, from [dofustouch.cdn.ankama.com](https://dofustouch.cdn.ankama.com) datas
 
 No images are provided with this project, only using the API to process (might take a while to process)
 
@@ -23,9 +23,4 @@ node main.js mapid
 node main.js 287
 ```
 
-## Unsupported features
-- Random sprites
-- Ground levels
-- Rotations (partially)
-
-[Any contributions you make are greatly appreciated](https://github.com/ShowMeDawey/MapRenderer-DR)
+[Any contributions you make are greatly appreciated](https://github.com/aejii/MapRenderer-DT)
