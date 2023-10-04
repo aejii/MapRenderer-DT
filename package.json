@@ -1,7 +1,7 @@
 {
-  "name": "maprenderer-dr",
+  "name": "maprenderer-dt",
   "version": "0.0.1",
-  "description": "MapRenderer for Dofus Retro",
+  "description": "MapRenderer for Dofus Touch",
   "dependencies": {
     "axios": "^0.27.2",
     "canvas": "^2.10.1"
@@ -10,7 +10,7 @@
   "license": "ISC",
   "repository": {
     "type": "git",
-    "url": "https://github.com/ShowMeDawey/MapRenderer-DR.git"
+    "url": "https://github.com/aejii/MapRenderer-DT.git"
   },
-  "homepage": "https://github.com/ShowMeDawey/MapRenderer-DR#readme"
+  "homepage": "https://github.com/aejii/MapRenderer-DT#readme"
 }

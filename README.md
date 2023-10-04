@@ -19,6 +19,8 @@ npm install
 - Process :
 ```shell
 node main.js mapid
+# exemple map zone bouf [0,-31]
+node main.js 287
 ```
 
 ## Unsupported features
