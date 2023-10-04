@@ -43,32 +43,68 @@ async function getImage(path, id) {
     })
 }
 
-/*
-function getCellPos(cellId, nbCellPerRow) {
-    const pos = { x: 0, y: 0 };
-    let id = cellId;
+function getBoxParam(element) {
+    var cx = element.cx || 0;
+	var cy = element.cy || 0;
 
-    while (id > 0) {
-        const nbCellOnThisRow = pos.y % 2 === 0 ? nbCellPerRow : nbCellPerRow - 1;
-        if (id >= nbCellOnThisRow) {
-            pos.y++;
-            id -= nbCellOnThisRow;
-        } else {
-            pos.x += id;
-            id = 0;
-        }
-    }
-    return pos;
+	var x = element.x;
+	var y = element.y;
+
+	var sx = element.sx || 1;
+	var sy = element.sy || 1;
+
+	var w = element.cw;
+	var h = element.ch;
+
+	var x0 = -cx * sx;
+	var y0 = -cy * sy;
+
+	var x1 = (w - cx) * sx;
+	var y1 = -cy * sy;
+
+	var x2 = -cx * sx;
+	var y2 = (h - cy) * sy;
+
+	var x3 = (w - cx) * sx;
+	var y3 = (h - cy) * sy;
+
+	var rotation = element.rotation || 0;
+	if (rotation !== 0) {
+		var cos = Math.cos(rotation);
+		var sin = Math.sin(rotation);
+
+		var x0tmp = x0;
+		var x1tmp = x1;
+		var x2tmp = x2;
+		var x3tmp = x3;
+
+		x0 = x0 * cos - y0 * sin;
+		y0 = x0tmp * sin + y0 * cos;
+
+		x1 = x1 * cos - y1 * sin;
+		y1 = x1tmp * sin + y1 * cos;
+
+		x2 = x2 * cos - y2 * sin;
+		y2 = x2tmp * sin + y2 * cos;
+
+		x3 = x3 * cos - y3 * sin;
+		y3 = x3tmp * sin + y3 * cos;
+	}
+
+	x0 = x0 + x;
+	y0 = y0 + y;
+
+	x1 = x1 + x;
+	y1 = y1 + y;
+
+	x2 = x2 + x;
+	y2 = y2 + y;
+
+	x3 = x3 + x;
+	y3 = y3 + y;
+
+	return [x0, y0, x1, y1, x2, y2, x3, y3]
 }
-
-function rotateImage(image, rotation) {
-    const canvas = createCanvas(image.width, image.height);
-    const ctx = canvas.getContext('2d');
-    ctx.translate(image.width / 2, image.height / 2);
-    ctx.rotate(rotation);
-    ctx.drawImage(image, -image.width / 2, -image.height / 2);
-    return canvas;
-}*/
 
 async function generateMap(mapid) {
     axios.get(`${assetUrl}/maps/${mapid}.json`).then(async (response) => {
@@ -99,6 +135,7 @@ async function generateMap(mapid) {
             const cellElements = mapElements[cellId];
             for (var e = 0; e < cellElements.length; e++) {
                 var element = cellElements[e];
+                //if(element.g == 700771){//debug
                 element.position = parseInt(cellId, 10);
                 element.layer = 0;
                 var hue = element.hue;
@@ -106,13 +143,34 @@ async function generateMap(mapid) {
                 hue[1] = 1 + hue[1] / 127;
                 hue[2] = 1 + hue[2] / 127;
                 hue[3] = 1;
+                //hue non appliqué
                 console.log(element)
                 const image = await getImage("gfx/world/png", `${element.g}.png`);
-                context.drawImage(image, element.x, element.y, element.cw, element.ch);
+                let donner = getBoxParam(element)
+                let tmpcw = Math.abs(donner[2]-donner[0])
+                let tmpch = Math.abs(donner[5]-donner[1])
+                context.drawImage(image, donner[0], donner[1], tmpcw , tmpch);
+                //context.drawImage(image, element.x, element.y, element.cw, element.ch);//sans rota
+
+                //}//debug
             }
         }
 
-        //atlasLayout?????? c quoi?
+        //805,531   //924,531
+
+        //805,715   //924,715
+
+        //atlasLayout?????? tilesset de la map (utile/20?)
+        /*let mapElements = mapData.atlasLayout.graphicsPositions;
+        let cellIds = Object.keys(mapElements)
+        for (let index = 0; index < cellIds.length; index++) {
+            
+            const cellId = cellIds[index];
+            const element = mapElements[cellId];
+            console.log(element)
+            const image = await getImage("gfx/world/png", `${cellId}.png`);
+            context.drawImage(image, element.sx, element.sy, element.sw, element.sh);
+        }*/
 
         //foreground (vérif si la)
 
