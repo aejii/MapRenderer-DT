@@ -135,7 +135,13 @@ async function generateMap(mapid) {
             const cellElements = mapElements[cellId];
             for (var e = 0; e < cellElements.length; e++) {
                 var element = cellElements[e];
-                //if(element.g == 700771){//debug
+                var layoutElement = mapData.atlasLayout.graphicsPositions[cellElements[e].g];
+                //if (element.g != 14574) continue;
+                
+                let x = element.x + CONSTANTS.CELL_HALF_WIDTH;
+                let y = element.y + CONSTANTS.CELL_HALF_HEIGHT;
+                let sx = element.sx;
+
                 element.position = parseInt(cellId, 10);
                 element.layer = 0;
                 var hue = element.hue;
@@ -146,10 +152,22 @@ async function generateMap(mapid) {
                 //hue non appliqué
                 console.log(element)
                 const image = await getImage("gfx/world/png", `${element.g}.png`);
-                let donner = getBoxParam(element)
+                
+                /*let donner = getBoxParam(element)
                 let tmpcw = Math.abs(donner[2]-donner[0])
                 let tmpch = Math.abs(donner[5]-donner[1])
                 context.drawImage(image, donner[0], donner[1], tmpcw , tmpch);
+                */
+
+                context.save();
+                if (sx == -1) {
+                  // it means horizontal flip
+                  context.scale(-1, 1);
+                  x = -x;
+                }
+                context.drawImage(image, x, y, element.cw, element.ch);
+                context.restore();
+
                 //context.drawImage(image, element.x, element.y, element.cw, element.ch);//sans rota
 
                 //}//debug
