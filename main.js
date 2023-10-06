@@ -150,14 +150,8 @@ async function generateMap(mapid) {
                 hue[2] = 1 + hue[2] / 127;
                 hue[3] = 1;
                 //hue non appliqué
-                console.log(element)
+                //console.log(element)
                 const image = await getImage("gfx/world/png", `${element.g}.png`);
-                
-                /*let donner = getBoxParam(element)
-                let tmpcw = Math.abs(donner[2]-donner[0])
-                let tmpch = Math.abs(donner[5]-donner[1])
-                context.drawImage(image, donner[0], donner[1], tmpcw , tmpch);
-                */
 
                 context.save();
                 if (sx == -1) {
@@ -169,14 +163,8 @@ async function generateMap(mapid) {
                 context.restore();
 
                 //context.drawImage(image, element.x, element.y, element.cw, element.ch);//sans rota
-
-                //}//debug
             }
         }
-
-        //805,531   //924,531
-
-        //805,715   //924,715
 
         //atlasLayout?????? tilesset de la map (utile/20?)
         /*let mapElements = mapData.atlasLayout.graphicsPositions;
