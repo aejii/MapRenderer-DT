@@ -4,6 +4,9 @@ const { createCanvas, loadImage } = require('canvas');
 
 //url a récup, risque de modif les mardi : https://proxyconnection.touch.dofus.com/config.json -> assetsUrl
 const assetUrl = `https://dofustouch.cdn.ankama.com/assets/2.46.4_byk230XYjY4gzEEGAaWeL4uuA'_OX'qW`;
+const drawLine = true
+const offsetX = 10
+const offsetY = -6
 
 const CONSTANTS = {
     CELL_WIDTH: 86,
@@ -43,6 +46,7 @@ async function getImage(path, id) {
     })
 }
 
+//box of cellElements
 function getBoxParam(element) {
     var cx = element.cx || 0;
 	var cy = element.cy || 0;
@@ -127,7 +131,7 @@ async function generateMap(mapid) {
         const image = await getImage("backgrounds", `${mapid}.jpg`);
         context.drawImage(image, 0, 0, imageDim.width, imageDim.height);
 
-        //midgroundLayer (semi ok)
+        //midgroundLayer (ok)
         let mapElements = mapData.midgroundLayer;
         let cellIds = Object.keys(mapElements)
         for (let index = 0; index < cellIds.length; index++) {
@@ -136,10 +140,10 @@ async function generateMap(mapid) {
             for (var e = 0; e < cellElements.length; e++) {
                 var element = cellElements[e];
                 var layoutElement = mapData.atlasLayout.graphicsPositions[cellElements[e].g];
-                //if (element.g != 14574) continue;
+                //if (element.g != 14574) continue;//debug special elem
                 
-                let x = element.x + CONSTANTS.CELL_HALF_WIDTH;
-                let y = element.y + CONSTANTS.CELL_HALF_HEIGHT;
+                let x = element.x + CONSTANTS.CELL_HALF_WIDTH + offsetX;
+                let y = element.y + CONSTANTS.CELL_HALF_HEIGHT + offsetY;
                 let sx = element.sx;
 
                 element.position = parseInt(cellId, 10);
@@ -159,7 +163,10 @@ async function generateMap(mapid) {
                   context.scale(-1, 1);
                   x = -x;
                 }
-                context.drawImage(image, x, y, element.cw, element.ch);
+                
+                //allow "clip"
+                //if (y + element.ch < 866) continue //test clip on map 287
+                context.drawImage(image, x-x, y-y, element.cw, element.ch, x, y, element.cw, element.ch);
                 context.restore();
 
                 //context.drawImage(image, element.x, element.y, element.cw, element.ch);//sans rota
