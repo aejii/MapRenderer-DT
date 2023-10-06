@@ -21,6 +21,8 @@ npm install
 node main.js mapid
 # exemple map zone bouf [0,-31]
 node main.js 287
+#exemple foreground
+node main.js 773
 ```
 
 [Any contributions you make are greatly appreciated](https://github.com/aejii/MapRenderer-DT)

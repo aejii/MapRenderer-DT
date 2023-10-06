@@ -178,7 +178,11 @@ async function generateMap(mapid) {
             context.drawImage(image, element.sx, element.sy, element.sw, element.sh);
         }*/
 
-        //foreground (vérif si la)
+        //foreground
+        if (mapData.foreground){
+            const image = await getImage("foregrounds", `${mapid}.png`);
+            context.drawImage(image, 0, 0, imageDim.width, imageDim.height);
+        }
 
         const buffer = mapCanvas.toBuffer('image/png');
         if (!fs.existsSync(`./output`)) fs.mkdirSync(`./output`);
